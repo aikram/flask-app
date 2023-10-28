@@ -1,24 +1,26 @@
-# Use the official Python image from Docker Hub as the base image
+  GNU nano 6.2                                           Dockerfile                                                     # Usa la imagen oficial de Python desde Docker Hub como imagen base
 FROM python:3.8
 
- # Label manteainer 
- LABEL maintainer marcia.gutierrez@utec.edu.pe
+# Etiqueta del mantenedor
+LABEL maintainer="marcia.gutierrez@utec.edu.pe"
 
- # Git Clone 
- RUN git clone -q https://github.com/aikram/flask-app
+# Instala git
+RUN apt-get update && apt-get install -y git
 
- # Set the working directory to app
- WORKDIR app
+# Clona tu repositorio de GitHub dentro del directorio /app
+RUN git clone -q https://github.com/aikram/flask-app /app
 
- # Install any needed packages specified in requirements.txt
- RUN pip install -r requirements.txt
+# Establece el directorio de trabajo en /app
+WORKDIR /app
 
- # Make port 8000 available to the world outside this container
- EXPOSE 8000
+# Instala las dependencias especificadas en requirements.txt
+RUN pip install -r requirements.txt
 
- # Define environment variable
- ENV NAME FlaskApp
+# Expone el puerto 8000 para que sea accesible desde fuera del contenedor
+EXPOSE 8000
 
- # Run app.py when the container launches
- CMD ["python", "app.py"]
+# Define la variable de entorno NAME como FlaskApp
+ENV NAME FlaskApp
 
+# Comando para ejecutar la aplicación Flask
+CMD ["python", "app.py"]
